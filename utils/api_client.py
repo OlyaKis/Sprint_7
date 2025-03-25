@@ -9,24 +9,11 @@ def generate_random_string(length=10):
     return ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
 
 
-def register_new_courier_and_return_login_password():
-    login = generate_random_string()
-    password = generate_random_string()
-    first_name = generate_random_string()
-
-    payload = {
-        "login": login,
-        "password": password,
-        "firstName": first_name
-    }
-
-    response = requests.post(COURIER_ENDPOINT, json=payload)
-
-    return response, login, password
-
-
 def delete_courier(courier_id):
-    return requests.delete(f"{BASE_URL}/courier/{courier_id}")
+    if not courier_id:
+        return requests.delete(f"{COURIER_ENDPOINT}/")
+    response = requests.delete(f"{COURIER_ENDPOINT}/{courier_id}")
+    return response
 
 
 def login_courier(login, password):
